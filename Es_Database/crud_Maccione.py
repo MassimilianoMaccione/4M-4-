@@ -12,15 +12,15 @@ def create_person(engine):
         person4 = Person(name="Bob", surname="Johnson", age=40, city="Houston")
         person5 = Person(name="Charlie", surname="Brown", age=50, city="Phoenix")
         session.add(person1)
-        persone.add(person1)
+        persone.append(person1)
         session.add(person2)
-        persone.add(person2)
+        persone.append(person2)
         session.add(person3)
-        persone.add(person3)
+        persone.append(person3)
         session.add(person4)
-        persone.add(person4)
+        persone.append(person4)
         session.add(person5)
-        persone.add(person5)    
+        persone.append(person5)    
         session.commit()
 
         session.refresh(person1)
@@ -31,14 +31,16 @@ def create_person(engine):
 
 
 
-def select_person(engine):
+def select_person_cars(engine, person_name):
     with Session(engine) as session:
 
-        statement = select(Person).where(Person.name == "John")
+        statement = select(Person,Car).where(Person.name == person_name).where(Person.id == Car.person_id)
         result = session.exec(statement)
-        person_jhon = result.one()
-
-        print("John's car again:", person_jhon.car)
+        person_jhon = result.all()
+        print(person_jhon[0][0],"\n\n")
+        for _ in person_jhon:
+            print(_[1]) 
+        #print("John's car again:", person_jhon.car)
 
 
 def create_car(engine):
